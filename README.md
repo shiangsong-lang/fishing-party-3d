@@ -1,36 +1,34 @@
-# Fishing Party 3D v2.0 — 湖畔多人移動版
+# Fishing Party 3D v2.1
 
-## 啟動
-安裝 Node.js 18+，在專案資料夾執行：
+延續 v2.0 的 Three.js 第三人稱湖畔、WASD、Socket.IO 房間、180 秒比賽與排行榜，新增多人同步的拋竿、浮標、魚線、水波紋、咬鉤、揚竿與張力收線遊戲。
 
-```bash
-npm install
-npm start
-```
+## Windows 本機啟動
 
-瀏覽器開啟 http://localhost:3000。建立房間，另一個瀏覽器輸入房號加入。
+1. 安裝 Node.js LTS。
+2. 解壓縮 ZIP，開啟本資料夾，在檔案總管網址列輸入 `cmd`。
+3. 執行 `npm install`，接著 `npm start`。
+4. 打開 http://localhost:3000 。兩個瀏覽器分頁可測試多人。
 
 ## 操作
-- WASD / 方向鍵：移動
-- Shift：加速
-- 按住滑鼠在 3D 畫面左右拖曳：旋轉第三人稱鏡頭
-- 滑鼠滾輪：縮放
-- 房主按「開始比賽」後可使用原本的「拋竿釣魚」按鈕
 
-## v2.0 新增
-- 湖邊自由移動，禁止走入湖中央
-- 第三人稱跟隨攝影機
-- Socket.IO 即時同步玩家位置與朝向；伺服器基本速度與範圍檢查
-- 保留房間、釣魚計分、倒數、排行榜及重新比賽
+- WASD 移動，Shift 加速，滑鼠拖曳旋轉攝影機，滾輪縮放。
+- 房主開始比賽後，角色站在湖邊**面向湖心**（拋竿方向以角色面向方向為準）。
+- **按住「拋竿」按鈕**蓄力，放開拋竿。蓄力越久距離越遠；必須讓浮標落在湖面。
+- 等待魚咬鉤（約 2.5–6 秒），在 2.1 秒內按 **Space** 揚竿。
+- **按住 R** 或畫面上的「按住收線」按鈕收線；放開讓張力下降。張力到 100% 會斷線，24 秒未完成魚會逃走。
+- 釣到魚顯示魚種、稀有度、重量與分數。其他玩家可看到釣竿、魚線、浮標及咬鉤狀態。
 
-## Render 更新部署
-1. 在 GitHub 的同一個 `fishing-party-3d` repository 上傳此專案內容，覆蓋同名檔案（不要上傳 zip 或 node_modules）。
-2. Render 既有 Web Service → Manual Deploy → Deploy latest commit（若已自動部署則不必）。
-3. 設定維持 Build Command: `npm install`、Start Command: `npm start`、Root Directory 留空（package.json 位於根目錄時）。
-4. Render 顯示 Live 後重新整理原本網址，兩個瀏覽器加入同房測試。
+## 更新 GitHub + Render
 
-## 注意
-- 使用 Three.js CDN，玩家瀏覽器需能存取 jsDelivr。
-- 房間及比分儲存在伺服器記憶體，Render 重新啟動會清空。
-- 移動為客戶端預測與伺服器基本驗證，非防作弊競技架構。
-- 此版保留原有按鈕式釣魚，3D 拋竿動畫是後續階段。
+**先在本機測試，再更新公開站。** 將本資料夾內所有檔案與 `public/` 子目錄的內容，覆蓋上傳至**原本** GitHub `fishing-party-3d` 專案的相同路徑（不要上傳 ZIP 或 node_modules）。
+
+Render → 原本 Web Service → Manual Deploy → Deploy latest commit。原有 Build Command `npm install`，Start Command `npm start`，無需新增 Render 服務或更換網址。
+
+如果 GitHub 網頁無法覆蓋同名檔案，可使用 GitHub Desktop clone 儲存庫，將新版檔案複製覆蓋，再 commit/push。
+
+## 設計限制
+
+- 房間、分數存在伺服器記憶體；Render 服務重啟會清空。
+- 此版釣魚動畫是簡單幾何模型，不是完整人物骨骼動畫。
+- 3D 模型採 Three.js CDN，首次載入需要網路。
+- 伺服器驗證魚種、得分、釣魚狀態、浮標位置；客戶端傳送蓄力與收線按壓狀態。
